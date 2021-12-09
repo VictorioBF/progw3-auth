@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UsuariosController extends Controller
 {
@@ -38,29 +39,26 @@ class UsuariosController extends Controller
     public function login(Request $form)
     {
         // Está enviando o formulário
-        if ($form->isMethod('POST'))
-        {
-            $username = $form->usuario;
-            $password = $form->senha;
+        if ($form->isMethod('POST')) {
+            
+            // Se um dos campos não for preenchidos, nem tenta o login e volta para a página anterior
+            $credentials = $form->validate([
+                'username' => ['required'],
+                'password' => ['required'],
+            ]);
 
-            $consulta = Usuario::select('id', 'nome', 'email', 'usuario', 'senha')->where('usuario', $username)->get();
+            // Tenta o login
+            if (Auth::attempt($credentials)) {
+                session()->regenerate();
+                return redirect()->route('home');
+            } else {
 
-            // Confere se encontrou algum usuário
-            if ($consulta->count())
-            {
-                // Confere se a senha está correta
-                if (Hash::check($password, $consulta[0]->password))
-                {
-                    unset($consulta[0]->password);
-
-                    session()->put('usuario', $consulta[0]);
-
-                    return redirect()->route('home');
-                }
+                // Login deu errado (usuário ou senha inválidos)
+                return redirect()->route('login')->with(
+                    'erro',
+                    'Usuário ou senha inválidos.'
+                );
             }
-
-            // Login deu errado (usuário ou senha inválidos)
-            return redirect()->route('login')->with('erro', 'Usuário ou senha inválidos.');
         }
 
         return view('usuarios.login');

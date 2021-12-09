@@ -8,27 +8,37 @@ use Illuminate\Database\Eloquent\Model;
 
 class Usuario extends Model implements Authenticatable
 {
-    function getAuthIdentifierName(){
+    protected $hidden = [
+        'password',
+    ];
+
+    function getAuthIdentifierName()
+    {
         return 'id';
     }
-    
-    function getAuthIdentifier(){
+
+    function getAuthIdentifier()
+    {
         return $this->id;
     }
 
-    function getAuthPassword(){
+    function getAuthPassword()
+    {
         return $this->password;
     }
 
-    function getRememberToken(){
-        return;
-    }
-    
-    function setRememberToken($data){
+    function getRememberToken()
+    {
         return;
     }
 
-    function getRememberTokenName(){
+    function setRememberToken($data)
+    {
+        return;
+    }
+
+    function getRememberTokenName()
+    {
         return 'token';
     }
 
