@@ -21,11 +21,24 @@
         </tr>
 
         @foreach ($users as $user)
-        <tr>
-            <td>{{ $user->id }}</td>
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->email }}</td>
-        </tr>
+        @if ($user->admin == 1)
+        
+            <tr style="background-color: #fafafa">
+                <td>{{ $user->id }}</td>
+                <td>{{ $user->name }}</td>
+                <td>{{ $user->email }}</td>
+            </tr>
+        
+        @else
+        
+            <tr>
+                <td>{{ $user->id }}</td>
+                <td>{{ $user->name }}</td>
+                <td>{{ $user->email }}</td>
+            </tr>
+        
+        @endif
+
         @endforeach
     </table>
 </div>

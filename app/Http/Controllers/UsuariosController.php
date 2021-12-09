@@ -46,7 +46,7 @@ class UsuariosController extends Controller
                 'username' => ['required'],
                 'password' => ['required'],
             ]);
-
+            
             // Tenta o login
             if (Auth::attempt($credentials)) {
                 session()->regenerate();
@@ -66,7 +66,7 @@ class UsuariosController extends Controller
 
     public function logout()
     {
-        session()->forget('usuario');
+        Auth::logout();
         return redirect()->route('home');
     }
 }
