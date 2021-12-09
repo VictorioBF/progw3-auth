@@ -20,11 +20,11 @@
             <th>E-mail</th>
         </tr>
 
-        @foreach ($usuarios as $usuario)
+        @foreach ($users as $user)
         <tr>
-            <td>{{ $usuario->id }}</td>
-            <td>{{ $usuario->nome }}</td>
-            <td>{{ $usuario->email }}</td>
+            <td>{{ $user->id }}</td>
+            <td>{{ $user->name }}</td>
+            <td>{{ $user->email }}</td>
         </tr>
         @endforeach
     </table>

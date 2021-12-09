@@ -10,9 +10,9 @@ class UsuariosController extends Controller
 {
     public function index()
     {
-        $usuarios = Usuario::orderBy('id', 'asc')->get();
+        $users = Usuario::orderBy('id', 'asc')->get();
 
-        return view('usuarios.index', ['usuarios' => $usuarios, 'pagina' => 'usuarios']);
+        return view('usuarios.index', ['users' => $users, 'pagina' => 'usuarios']);
     }
 
     public function create()
@@ -22,14 +22,14 @@ class UsuariosController extends Controller
 
     public function insert(Request $form)
     {
-        $usuario = new Usuario();
+        $user = new Usuario();
 
-        $usuario->nome = $form->nome;
-        $usuario->email = $form->email;
-        $usuario->usuario = $form->usuario;
-        $usuario->senha = Hash::make($form->senha);
+        $user->name = $form->name;
+        $user->email = $form->email;
+        $user->username = $form->username;
+        $user->password = Hash::make($form->password);
 
-        $usuario->save();
+        $user->save();
 
         return redirect()->route('usuarios.index');
     }
@@ -40,18 +40,18 @@ class UsuariosController extends Controller
         // Está enviando o formulário
         if ($form->isMethod('POST'))
         {
-            $usuario = $form->usuario;
-            $senha = $form->senha;
+            $username = $form->usuario;
+            $password = $form->senha;
 
-            $consulta = Usuario::select('id', 'nome', 'email', 'usuario', 'senha')->where('usuario', $usuario)->get();
+            $consulta = Usuario::select('id', 'nome', 'email', 'usuario', 'senha')->where('usuario', $username)->get();
 
             // Confere se encontrou algum usuário
             if ($consulta->count())
             {
                 // Confere se a senha está correta
-                if (Hash::check($senha, $consulta[0]->senha))
+                if (Hash::check($password, $consulta[0]->password))
                 {
-                    unset($consulta[0]->senha);
+                    unset($consulta[0]->password);
 
                     session()->put('usuario', $consulta[0]);
 
