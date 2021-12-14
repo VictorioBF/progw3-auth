@@ -40,24 +40,39 @@ class UsuariosController extends Controller
     {
         // Está enviando o formulário
         if ($form->isMethod('POST')) {
-            
+
             // Se um dos campos não for preenchidos, nem tenta o login e volta para a página anterior
             $credentials = $form->validate([
                 'username' => ['required'],
                 'password' => ['required'],
             ]);
-            
-            // Tenta o login
-            if (Auth::attempt($credentials)) {
-                session()->regenerate();
-                return redirect()->route('home');
-            } else {
 
-                // Login deu errado (usuário ou senha inválidos)
-                return redirect()->route('login')->with(
-                    'erro',
-                    'Usuário ou senha inválidos.'
-                );
+
+            if ($form->remember != null) {
+                // Tenta o login
+                if (Auth::attempt($credentials, true)) {
+                    session()->regenerate();
+                    return redirect()->route('home');
+                } else {
+
+                    // Login deu errado (usuário ou senha inválidos)
+                    return redirect()->route('login')->with(
+                        'erro',
+                        'Usuário ou senha inválidos.'
+                    );
+                }
+            }else{
+                if (Auth::attempt($credentials)) {
+                    session()->regenerate();
+                    return redirect()->route('home');
+                } else {
+
+                    // Login deu errado (usuário ou senha inválidos)
+                    return redirect()->route('login')->with(
+                        'erro',
+                        'Usuário ou senha inválidos.'
+                    );
+                }
             }
         }
 

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Usuario extends Model implements Authenticatable
 {
     protected $hidden = [
-        'password',
+        'password'
     ];
 
     function getAuthIdentifierName()
@@ -29,17 +29,19 @@ class Usuario extends Model implements Authenticatable
 
     function getRememberToken()
     {
-        return;
+        return $this->remember_token;
     }
 
-    function setRememberToken($data)
+    function setRememberToken($value)
     {
+        $this->remember_token = $value;
+
         return;
     }
 
     function getRememberTokenName()
     {
-        return 'token';
+        return 'remember_token';
     }
 
     use HasFactory;
