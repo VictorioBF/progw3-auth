@@ -37,12 +37,20 @@ Route::delete('/produtos/{prod}/apagar', [ProdutosController::class, 'delete'])-
 
 Route::get('usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');
 
-Route::prefix('usuarios')->group(function() {
-    
+Route::prefix('usuarios')->group(function () {
+
     Route::get('/inserir', [UsuariosController::class, 'create'])->name('usuarios.inserir');
     Route::post('/inserir', [UsuariosController::class, 'insert'])->name('usuarios.gravar');
-
 });
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-email', ['pagina' => 'verify-email']);
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function ($request) {
+    $request->fulfill();
+    return redirect()->route('home');
+})->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::get('/login', [UsuariosController::class, 'login'])->name('login');
 Route::post('/login', [UsuariosController::class, 'login']);

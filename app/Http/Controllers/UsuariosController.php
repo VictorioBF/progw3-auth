@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Usuario;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -31,8 +32,12 @@ class UsuariosController extends Controller
         $user->password = Hash::make($form->password);
 
         $user->save();
+        event(new Registered($user));
+        
+        Auth::login($user);
 
-        return redirect()->route('usuarios.index');
+        return redirect()->route('verification.notice');
+        // return redirect()->route('usuarios.index');
     }
 
     // Ações de login
