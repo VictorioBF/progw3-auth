@@ -17,49 +17,50 @@ class UsuariosController extends Controller
         return view('usuarios.index', ['users' => $users, 'pagina' => 'usuarios']);
     }
 
+    
     public function create()
     {
         return view('usuarios.create', ['pagina' => 'usuarios']);
     }
-
+    
     public function insert(Request $form)
     {
         $user = new Usuario();
-
+        
         $user->name = $form->name;
         $user->email = $form->email;
         $user->username = $form->username;
         $user->password = Hash::make($form->password);
-
+        
         $user->save();
         event(new Registered($user));
         
         Auth::login($user);
-
+        
         return redirect()->route('verification.notice');
         // return redirect()->route('usuarios.index');
     }
-
+    
     // Ações de login
     public function login(Request $form)
     {
         // Está enviando o formulário
         if ($form->isMethod('POST')) {
-
+            
             // Se um dos campos não for preenchidos, nem tenta o login e volta para a página anterior
             $credentials = $form->validate([
                 'username' => ['required'],
                 'password' => ['required'],
             ]);
-
-
+            
+            
             if ($form->remember != null) {
                 // Tenta o login
                 if (Auth::attempt($credentials, true)) {
                     session()->regenerate();
                     return redirect()->route('home');
                 } else {
-
+                    
                     // Login deu errado (usuário ou senha inválidos)
                     return redirect()->route('login')->with(
                         'erro',
@@ -71,7 +72,7 @@ class UsuariosController extends Controller
                     session()->regenerate();
                     return redirect()->route('home');
                 } else {
-
+                    
                     // Login deu errado (usuário ou senha inválidos)
                     return redirect()->route('login')->with(
                         'erro',
@@ -80,13 +81,33 @@ class UsuariosController extends Controller
                 }
             }
         }
-
+        
         return view('usuarios.login');
     }
-
+    
     public function logout()
     {
         Auth::logout();
         return redirect()->route('home');
     }
+
+    public function profile(){
+        return view('profile.index', ['pagina' => 'perfil']);
+    }
+
+    public function edit(){
+        return view('profile.edit', ['pagina' => 'perfil']);
+    }
+
+    public function update(Request $form, Usuario $user)
+    {
+        $user->nome = $form->nome;
+        $user->preco = $form->preco;
+        $user->descricao = $form->descricao;
+
+        $user->save();
+
+        return redirect()->route('perfil');
+    }
+
 }

@@ -36,12 +36,21 @@ Route::get('/produtos/{prod}/apagar', [ProdutosController::class, 'remove'])->na
 
 Route::delete('/produtos/{prod}/apagar', [ProdutosController::class, 'delete'])->name('produtos.delete');
 
+Route::get('perfil', [UsuariosController::class, 'profile'])->middleware('auth')->name('perfil');
+
+Route::get('/perfil/editar', [UsuariosController::class, 'edit'])->middleware('auth')->name('perfil.edit');
+Route::post('/perfil/editar', [UsuariosController::class, 'update'])->middleware('auth')->name('perfil.record');
+
+Route::get('/perfil/senha', [UsuariosController::class, 'profile.password'])->middleware('auth')->name('perfil.password');
+Route::post('/perfil/senha', [UsuariosController::class, 'profile.password'])->middleware('auth')->name('perfil.record.password');
+
 Route::get('usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');
 
 Route::prefix('usuarios')->group(function () {
 
     Route::get('/inserir', [UsuariosController::class, 'create'])->name('usuarios.inserir');
     Route::post('/inserir', [UsuariosController::class, 'insert'])->name('usuarios.gravar');
+    
 });
 
 Route::get('/email/verify', function () {
