@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="row">
-  <form method="post" action="{{ route('perfil.record') }}">
+  <form method="post" action="{{ route('perfil.record', Auth::user()) }}">
     @csrf
     @method('put')
     <div class="mb-3">

@@ -23,26 +23,23 @@ Route::get('/', function () {
 Route::get('produtos', [ProdutosController::class, 'index'])->middleware('verified')->name('produtos');
 
 Route::get('/produtos/inserir', [ProdutosController::class, 'create'])->name('produtos.inserir');
-
 Route::post('/produtos/inserir', [ProdutosController::class, 'insert'])->name('produtos.gravar');
 
 Route::get('/produtos/{prod}', [ProdutosController::class, 'show'])->name('produtos.show');
 
 Route::get('/produtos/{prod}/editar', [ProdutosController::class, 'edit'])->name('produtos.edit');
-
 Route::put('/produtos/{prod}/editar', [ProdutosController::class, 'update'])->name('produtos.update');
 
 Route::get('/produtos/{prod}/apagar', [ProdutosController::class, 'remove'])->name('produtos.remove');
-
 Route::delete('/produtos/{prod}/apagar', [ProdutosController::class, 'delete'])->name('produtos.delete');
 
 Route::get('perfil', [UsuariosController::class, 'profile'])->middleware('auth')->name('perfil');
 
 Route::get('/perfil/editar', [UsuariosController::class, 'edit'])->middleware('auth')->name('perfil.edit');
-Route::post('/perfil/editar', [UsuariosController::class, 'update'])->middleware('auth')->name('perfil.record');
+Route::put('/perfil/{user}/editar', [UsuariosController::class, 'update'])->middleware('auth')->name('perfil.record');
 
-Route::get('/perfil/senha', [UsuariosController::class, 'profile.password'])->middleware('auth')->name('perfil.password');
-Route::post('/perfil/senha', [UsuariosController::class, 'profile.password'])->middleware('auth')->name('perfil.record.password');
+Route::get('/perfil/senha', [UsuariosController::class, 'editPassword'])->middleware('auth')->name('perfil.password');
+Route::put('/perfil/{user}/senha', [UsuariosController::class, 'updatePassword'])->middleware('auth')->name('perfil.record.password');
 
 Route::get('usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');
 

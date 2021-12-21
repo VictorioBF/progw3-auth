@@ -101,9 +101,37 @@ class UsuariosController extends Controller
 
     public function update(Request $form, Usuario $user)
     {
-        $user->nome = $form->nome;
-        $user->preco = $form->preco;
-        $user->descricao = $form->descricao;
+        $user->name = $form->name;
+        $user->email = $form->email;
+
+        if($form->email != Auth::user()->email){
+            $user->email_verified_at = NULL;
+        }
+
+        $user->save();
+
+        return redirect()->route('perfil');
+    }
+
+    //==========================================================================//
+
+    public function editPassword(){
+        return view('profile.password', ['pagina' => 'perfil']);
+    }
+
+    public function updatePassword(Request $form, Usuario $user)
+    {
+        
+        if($form->password != $form->repeatPassword){
+            return redirect()->route('perfil')->with('erro', 'As senhas não são iguais.');
+        }elseif(Hash::check($form->password, Auth::user()->password)){
+            return redirect()->route('perfil')->with('erro', 'Sua senha está incorreta.');
+        }
+
+        $user->name = Auth::user()->name;
+        $user->email = Auth::user()->email;
+        
+        $user->password = Hash::make($form->password);
 
         $user->save();
 
