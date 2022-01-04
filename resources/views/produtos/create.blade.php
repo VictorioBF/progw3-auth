@@ -24,8 +24,13 @@
             </div>
             
             <div class="mb-3">
-                <label for="descricao" class="form-label">Foto</label>
-                <input type="file" name="imagem">
+                <label for="imagem" class="form-label">Imagem</label>
+                <input type="file" id="imagem" name="imagem">
+                <input type="hidden" name="img" id="img">
+            </div>
+            
+            <div class="mb-3">
+                <img id="img-crop" src="#" style="width: 100%; height: 100%; objectFit: cover" alt="pré-visualização"/>
             </div>
 
             <div class="mb-3">
@@ -35,4 +40,15 @@
 
     </div>
 </div>
+<script>
+    
+    // Image Preview
+    document.querySelector('#imagem').onchange = evt => {
+        const [file] = document.querySelector('#imagem').files
+        if (file) {
+            document.querySelector('#img-crop').src = URL.createObjectURL(file)
+        }
+    }
+
+</script>
 @endsection

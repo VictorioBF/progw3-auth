@@ -7,19 +7,7 @@ use Illuminate\Http\Request;
 
 class ProdutosController extends Controller
 {
-    
-    public function index()
-    {
-        $produtos = Produto::orderBy('id', 'desc')->get();
-
-        return view('produtos.index', ['prods' => $produtos, 'pagina' => 'produtos']);
-    }
-
-    public function show(Produto $prod)
-    {
-        return view('produtos.show', ['prod' => $prod, 'pagina' => 'produtos']);
-    }
-
+    //C
     public function create()
     {
         return view('produtos.create', ['pagina' => 'produtos']);
@@ -38,9 +26,21 @@ class ProdutosController extends Controller
 
         $prod->save();
 
-        return redirect()->route('produtos');
+        return redirect()->route('produtos.crop', ['prod' => $prod]);
+    }
+    //R
+    public function index()
+    {
+        $produtos = Produto::orderBy('id', 'desc')->get();
+
+        return view('produtos.index', ['prods' => $produtos, 'pagina' => 'produtos']);
     }
 
+    public function show(Produto $prod)
+    {
+        return view('produtos.show', ['prod' => $prod, 'pagina' => 'produtos']);
+    }
+    //U
     public function edit(Produto $prod)
     {
         return view('produtos.edit', ['prod' => $prod, 'pagina' => 'produtos']);
@@ -56,7 +56,7 @@ class ProdutosController extends Controller
 
         return redirect()->route('produtos');
     }
-
+    //D
     public function remove(Produto $prod)
     {
         return view('produtos.remove', ['prod' => $prod, 'pagina' => 'produtos']);
@@ -67,6 +67,17 @@ class ProdutosController extends Controller
         $prod->delete();
 
         return redirect()->route('produtos');
+    }
+    //IMAGEM
+    public function crop(Produto $prod)
+    {
+        return view('produtos.image', ['prod' => $prod, 'pagina' => 'image']);
+    }
+    public function image(Request $form, Produto $prod)
+    {
+        
+        
+        return view('produtos.image', ['prod' => $prod, 'pagina' => 'image']);
     }
 
 }

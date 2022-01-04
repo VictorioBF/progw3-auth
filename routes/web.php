@@ -20,18 +20,21 @@ Route::get('/', function () {
     return view('home', ['pagina' => 'home']);
 })->name('home');
 
-Route::get('produtos', [ProdutosController::class, 'index'])->middleware('verified')->name('produtos');
-
+//prod C
 Route::get('/produtos/inserir', [ProdutosController::class, 'create'])->name('produtos.inserir');
 Route::post('/produtos/inserir', [ProdutosController::class, 'insert'])->name('produtos.gravar');
-
+//prod R
+Route::get('produtos', [ProdutosController::class, 'index'])->middleware('verified')->name('produtos');
 Route::get('/produtos/{prod}', [ProdutosController::class, 'show'])->name('produtos.show');
-
+//prod U
 Route::get('/produtos/{prod}/editar', [ProdutosController::class, 'edit'])->name('produtos.edit');
 Route::put('/produtos/{prod}/editar', [ProdutosController::class, 'update'])->name('produtos.update');
-
+//prod D
 Route::get('/produtos/{prod}/apagar', [ProdutosController::class, 'remove'])->name('produtos.remove');
 Route::delete('/produtos/{prod}/apagar', [ProdutosController::class, 'delete'])->name('produtos.delete');
+//prod imagem
+Route::get('/produtos/{prod}/recorte', [ProdutosController::class, 'crop'])->name('produtos.crop');
+Route::post('/produtos/{prod}/recorte', [ProdutosController::class, 'image'])->name('produtos.image');
 
 Route::get('perfil', [UsuariosController::class, 'profile'])->middleware('auth')->name('perfil');
 
